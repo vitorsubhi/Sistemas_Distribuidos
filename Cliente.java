@@ -42,8 +42,9 @@ public class Cliente {
 							System.out.println("Usuario e/ou senha incorreta.");
 							System.exit(0);
 						}
-					} catch ( Exception e)
+					} catch ( Exception e )
 					{
+						System.out.println("Reestabelecendo conexão.");
 					}
 				}
 			});
@@ -60,7 +61,8 @@ public class Cliente {
 					chat.send_message(user+": "+msg);
 			}
 		}catch( Exception e )
-		{
+		{ 
+			System.out.println("Reestabelecendo conexão.");
 		}
 	}
 }
