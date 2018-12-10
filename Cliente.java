@@ -8,34 +8,42 @@ public class Cliente {
 	public static void main( String args[] ) {
 		try 
 		{
-			System.out.println("Iniciando conex√£o com o servidor...");
-			final ServidorChat chat = (ServidorChat) Naming.lookup( "//192.168.20.243:1098/ServidorChat" );
-			String nome;
+			System.out.println("Iniciando conexao com o servidor...");
+			final ServidorChat chat = (ServidorChat) Naming.lookup( "//127.0.0.1:1098/ServidorChat" );
+			String user, pass;
 			String msg = "";
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("Digite seu nome:");
-			nome = scanner.nextLine();
+			System.out.print("Usuario:");
+			user = scanner.nextLine();
+			System.out.print("Senha:");
+			pass = scanner.nextLine();
 			int mensagenslidas = 0;
 			Thread thread = new Thread(new Runnable() {
-				int cont = 0;//chat.lerMensagem().size();
+				int cont = 0;
 				@Override
 				public void run()
 				{
-					chat.connect();
 					try 
 					{
-						while(true)
+						if (chat.connect(user, pass))
 						{
-							if (chat.get_num_messages() > cont)
+							while(true)
 							{
-								System.out.println(chat.get_message(cont));
-								cont++;
+								if (chat.get_num_messages() > cont)
+								{
+									System.out.println(chat.get_message(cont));
+									cont++;
+								}
 							}
+						}
+						else
+						{
+							System.out.println("Usuario e/ou senha incorreta.");
+							System.exit(0);
 						}
 					} catch (RemoteException e)
 					{
-						System.out.println("Tentando reestabelecer conex√o com o servidor");
-						e.printStackTrace();
+						System.out.println("Tentando reestabelecer conexao com o servidor");
 					}
 				}
 			});
@@ -49,7 +57,7 @@ public class Cliente {
 					System.exit(0);
 				}
 				else
-					chat.send_message(nome+": "+msg);
+					chat.send_message(user+": "+msg);
 			}
 		}catch( Exception e )
 		{
