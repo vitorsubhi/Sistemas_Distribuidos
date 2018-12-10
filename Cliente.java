@@ -21,18 +21,20 @@ public class Cliente {
 				@Override
 				public void run()
 				{
+					chat.connect();
 					try 
 					{
 						while(true)
 						{
-							if (chat.lerMensagem().size() > cont)
+							if (chat.get_num_messages() > cont)
 							{
-								System.out.println(chat.lerMensagem().get(cont));//chat.lerMensagem().size()-1));
+								System.out.println(chat.get_message(cont));
 								cont++;
 							}
 						}
 					} catch (RemoteException e)
 					{
+						System.out.println("Tentando reestabelecer conex√o com o servidor");
 						e.printStackTrace();
 					}
 				}
@@ -43,12 +45,11 @@ public class Cliente {
 				msg = scanner.nextLine();
 				if (msg.equals("exit"))
 				{
-					chat.enviarMensagem(nome+" se desconectou.");
+					chat.disconnect();
 					System.exit(0);
 				}
 				else
-					chat.enviarMensagem(nome+": "+msg);
-				// System.out.println(chat.lerMensagem().get(cont));
+					chat.send_message(nome+": "+msg);
 			}
 		}catch( Exception e )
 		{
