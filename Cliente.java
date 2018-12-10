@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.rmi.RemoteException;
 public class Cliente {
 	public static void main( String args[] ) {
+		System.out.println("Iniciando conexao com o servidor...");
+		String user, pass;
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Usuario:");
+		user = scanner.nextLine();
+		System.out.print("Senha:");
+		pass = scanner.nextLine();
+		int mensagenslidas = 0;
+		String msg = "";
+		while (true)
 		try 
 		{
-			System.out.println("Iniciando conexao com o servidor...");
 			final ServidorChat chat = (ServidorChat) Naming.lookup( "//127.0.0.1:1098/ServidorChat" );
-			String user, pass;
-			String msg = "";
-			Scanner scanner = new Scanner(System.in);
-			System.out.print("Usuario:");
-			user = scanner.nextLine();
-			System.out.print("Senha:");
-			pass = scanner.nextLine();
-			int mensagenslidas = 0;
 			Thread thread = new Thread(new Runnable() {
 				int cont = 0;
 				@Override
@@ -41,9 +42,8 @@ public class Cliente {
 							System.out.println("Usuario e/ou senha incorreta.");
 							System.exit(0);
 						}
-					} catch (RemoteException e)
+					} catch ( Exception e)
 					{
-						System.out.println("Tentando reestabelecer conexao com o servidor");
 					}
 				}
 			});
@@ -61,7 +61,6 @@ public class Cliente {
 			}
 		}catch( Exception e )
 		{
-			e.printStackTrace();
 		}
 	}
 }
